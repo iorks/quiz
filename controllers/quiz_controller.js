@@ -18,18 +18,25 @@ exports.new = function(req, res){
 	var quiz = models.Quiz.build(	// crea un objeto quiz
 		{pregunta: "", respuesta: ""}
 	);
-	res.render('quizes/new', {quiz: quiz});
+	res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
 // GET /quizes/create
 exports.create = function(req, res){
 	var quiz = models.Quiz.build(req.body.quiz);
 
-	//guarda en BD los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta", "respuesta"]}).then(
-		function(){
-			res.redirect('/quizes');
-		});	  // redireccion HTTP (URL relativo) listado de preguntas
+	quiz.validate().then(function(err){
+		if (err) {
+			res.render('quizes/new', {quiz: quiz, errors: err.errors});
+		}
+		else {
+			//guarda en BD los campos pregunta y respuesta de quiz
+			quiz.save({fields: ["pregunta", "respuesta"]}).then(
+				function(){
+					res.redirect('/quizes');
+			});	  // redireccion HTTP (URL relativo) listado de preguntas
+		}
+	}).catch(function(error) { next(error); });
 };
 
 // GET /quizes
@@ -40,40 +47,36 @@ exports.index = function(req, res){
 	//sustituimos espacios por %, haciendo trim previamente
 	var find = ' ';
 	var re = new RegExp(find, 'g');
-	var searchRep = '%' + search.trim().replace(re, '%') + '%';
+	var searchRep = ('%' + search.trim().replace(re, '%') + '%'); 
 	//console.log('_searchRep: /' + searchRep + '/');
 
 	models.Quiz.findAll({
 		where: ["pregunta like ?", searchRep],
 		order: [['pregunta', 'ASC']]
-		}).success(
+		}).then(
 			function(quizes){
-				res.render('quizes/index', {quizes: quizes});
-	});
-
-	// no se puede aplicar catch a metod success
-	//.catch(function(error) { next(error); });
+				res.render('quizes/index', {quizes: quizes, errors: []});
+		}).catch(function(error) { next(error); });
 };
 
 
 // GET /quizes/:id
 exports.show = function(req, res){
 	models.Quiz.find(req.params.quizId).then(function(quiz){
-			res.render('quizes/show', {quiz: quiz});
+			res.render('quizes/show', {quiz: quiz, errors: []});
 		});
 };
 
 // GET /quizes/:id/answer
 exports.answer = function(req, res){
 	models.Quiz.find(req.params.quizId).then(function(quiz){
+		var resultado = 'Incorrecto';
 		if (req.query.respuesta.toLowerCase() === quiz.respuesta.toLowerCase()){
-			res.render('quizes/answer', 
-				{quiz: quiz, respuesta: 'Correcto'});
+			resultado = 'Correcto';
 		}
-		else {
-			res.render('quizes/answer', 
-				{quiz: quiz, respuesta: 'Incorrecto'});
-		}
+		res.render('quizes/answer', {quiz: quiz, 
+									 respuesta: resultado,
+									 errors: []});
 	});
 };
 
