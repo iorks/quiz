@@ -22,14 +22,7 @@ exports.index = function(req, res){
 	var find = ' ';
 	var re = new RegExp(find, 'g');
 	var searchRep = '%' + search.trim().replace(re, '%') + '%';
-
-	console.log('_searchRep: /' + searchRep + '/');
-
-	// models.Quiz.findAll({where: ["pregunta like ?", searchRep]}).success(
-	// 	function(quizes){
-	// 		res.render('quizes/index', {quizes: quizes});
-	// });
-
+	//console.log('_searchRep: /' + searchRep + '/');
 
 	models.Quiz.findAll({
 		where: ["pregunta like ?", searchRep],
@@ -38,7 +31,6 @@ exports.index = function(req, res){
 			function(quizes){
 				res.render('quizes/index', {quizes: quizes});
 	});
-
 
 	// no se puede aplicar catch a metod success
 	//.catch(function(error) { next(error); });
