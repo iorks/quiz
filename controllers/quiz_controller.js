@@ -15,10 +15,30 @@ exports.load = function(req, res, next, quizId){
 
 // GET /quizes
 exports.index = function(req, res){
-	models.Quiz.findAll().success(
-		function(quizes){
-			res.render('quizes/index', {quizes: quizes});
+
+	var search = req.query.search? req.query.search: '';
+
+	//sustituimos espacios por %, haciendo trim previamente
+	var find = ' ';
+	var re = new RegExp(find, 'g');
+	var searchRep = '%' + search.trim().replace(re, '%') + '%';
+
+	console.log('_searchRep: /' + searchRep + '/');
+
+	// models.Quiz.findAll({where: ["pregunta like ?", searchRep]}).success(
+	// 	function(quizes){
+	// 		res.render('quizes/index', {quizes: quizes});
+	// });
+
+
+	models.Quiz.findAll({
+		where: ["pregunta like ?", searchRep],
+		order: [['pregunta', 'ASC']]
+		}).success(
+			function(quizes){
+				res.render('quizes/index', {quizes: quizes});
 	});
+
 
 	// no se puede aplicar catch a metod success
 	//.catch(function(error) { next(error); });
@@ -35,7 +55,7 @@ exports.show = function(req, res){
 // GET /quizes/:id/answer
 exports.answer = function(req, res){
 	models.Quiz.find(req.params.quizId).then(function(quiz){
-		if (req.query.respuesta === quiz.respuesta){
+		if (req.query.respuesta.toLowerCase() === quiz.respuesta.toLowerCase()){
 			res.render('quizes/answer', 
 				{quiz: quiz, respuesta: 'Correcto'});
 		}

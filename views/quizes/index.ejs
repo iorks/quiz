@@ -1,4 +1,12 @@
 <div align="center">
+<form action="/quizes">
+	<label for="search">Buscar preguntas: </label>
+	<input type="text" id="search" name="search" value=""/>
+	<input type="submit" value="Enviar"/>
+</form>
+</div>
+
+<div align="center">
 <table>
 	<% var i; 
 	   for (i=0; i<quizes.length; i++) { %>
