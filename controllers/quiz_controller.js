@@ -32,7 +32,7 @@ exports.create = function(req, res){
 		}
 		else {
 			//guarda en BD los campos pregunta y respuesta de quiz
-			quiz.save({fields: ["pregunta", "respuesta"]}).then(
+			quiz.save({fields: ["pregunta", "respuesta", "tematica"]}).then(
 				function(){
 					res.redirect('/quizes');
 			});	  // redireccion HTTP (URL relativo) listado de preguntas
@@ -50,6 +50,7 @@ exports.edit = function(req, res){
 exports.update = function(req, res){
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tematica = req.body.quiz.tematica;
 
 	req.quiz.validate().then(
 		function(err){
@@ -58,7 +59,7 @@ exports.update = function(req, res){
 			}
 			else {
 				//guarda en BD los campos pregunta y respuesta de quiz
-				req.quiz.save({fields: ["pregunta", "respuesta"]}).then(
+				req.quiz.save({fields: ["pregunta", "respuesta", "tematica"]}).then(
 					function(){
 						res.redirect('/quizes');
 				});	  // redireccion HTTP (URL relativo) listado de preguntas

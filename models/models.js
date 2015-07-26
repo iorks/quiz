@@ -19,34 +19,44 @@ sequelize.sync().then(function(){
 	Quiz.count().then(function(count){
 		if (count === 0){   // la tabla se inicializa solo si esta vacia
 			Quiz.create({pregunta: 'Capital de Italia',
-						 respuesta: 'Roma'
+						 respuesta: 'Roma',
+						 tematica: 'ocio'
 						})
 			Quiz.create({pregunta: 'Capital de Portugal',
-						 respuesta: 'Lisboa'
+						 respuesta: 'Lisboa',
+						 tematica: 'ocio'
 						})
 			Quiz.create({pregunta: 'Mejor estación del año para ir a la playa',
-						 respuesta: 'Verano'
+						 respuesta: 'Verano',
+						 tematica: 'ocio'
 						})
 			Quiz.create({pregunta: 'Fruta más típica de las Islas Canarias',
-						 respuesta: 'Plátano'
+						 respuesta: 'Plátano',
+						 tematica: 'ciencia'
 						})
 			Quiz.create({pregunta: 'Color de un limón',
-						 respuesta: 'Amarillo'
+						 respuesta: 'Amarillo',
+						 tematica: 'ciencia'
 						})
 			Quiz.create({pregunta: 'Bebida incolora, inodora e insabora',
-						 respuesta: 'Agua'
+						 respuesta: 'Agua',
+						 tematica: 'ciencia'
 						})
 			Quiz.create({pregunta: 'País más rico de Europa',
-						 respuesta: 'Alemania'
+						 respuesta: 'Alemania',
+						 tematica: 'humanidades'
 						})
 			Quiz.create({pregunta: 'Ciudad dónde se encuentra al torre Eiffel',
-						 respuesta: 'París'
+						 respuesta: 'París',
+						 tematica: 'tecnologia'
 						})
 			Quiz.create({pregunta: 'Desierto más famoso del mundo',
-						 respuesta: 'Sahara'
+						 respuesta: 'Sahara',
+						 tematica: 'humanidades'
 						})
 			Quiz.create({pregunta: 'País con más población del mundo',
-						 respuesta: 'China'
+						 respuesta: 'China',
+						 tematica: 'tecnologia'
 						})
 					.then(function(){console.log('Base de datos inicializada')});
 		}
