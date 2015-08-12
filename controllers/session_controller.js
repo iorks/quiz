@@ -8,8 +8,6 @@ exports.loginRequired = function(req, res, next){
 	}
 };
 
-
-
 // GET /login - Formulario de login
 exports.new = function(req, res){
 	var errors = req.session.errors || {};
@@ -38,8 +36,6 @@ exports.create = function(req, res){
 
 		res.redirect(req.session.redir.toString());	// redirect al path anterior al login
 	});
-
-
 };
 
 // DELETE /logout - Destruir sesion
