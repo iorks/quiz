@@ -1,5 +1,11 @@
 body { background: #999; }
 
+
+#cierre-session{
+	color: white;
+	background-color: #009;
+}
+
 #page-wrap:after { content: "Wide Layout"; }
 
 /*nav       { float: left; width: 15%; height: 200px ;}*/
